@@ -224,16 +224,16 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 
 ### Task 7: Verify acceptance criteria
 
-- [ ] Delete `bin/` and `obj/` of both projects, then:
+- [x] Delete `bin/` and `obj/` of both projects, then:
   - `dotnet build -c Release -warnaserror` reports zero warnings;
   - `dotnet test tests/AtO-TimeScale.Tests` passes.
-- [ ] The output directory contains only `AtO-TimeScale.dll` and `AtO-TimeScale.pdb`.
-- [ ] Re-run the metadata inspection:
+- [x] The output directory contains only `AtO-TimeScale.dll` and `AtO-TimeScale.pdb`.
+- [x] Re-run the metadata inspection:
   - no `Assembly-CSharp`;
-  - `UnityEngine.CoreModule`, `UnityEngine.IMGUIModule`, `UnityEngine.InputLegacyModule` (if `KeyboardShortcut` needs it), `BepInEx` and `0Harmony` present;
+  - `UnityEngine.CoreModule`, `UnityEngine.IMGUIModule`, `UnityEngine.InputLegacyModule` (not needed: `KeyboardShortcut` lives in BepInEx, so no direct reference), `BepInEx` and `0Harmony` present;
   - correct `BepInPlugin` arguments.
-- [ ] `1.0.0` is hand-written only in `AtO-TimeScale.csproj`, and the GUID only there.
-- [ ] Grep check: only `Ultrafast.cs` calls `harmony.Patch`, and no game method is patched elsewhere.
+- [x] `1.0.0` is hand-written only in `AtO-TimeScale.csproj`, and the GUID only there.
+- [x] Grep check: only `Ultrafast.cs` calls `harmony.Patch`, and no game method is patched elsewhere.
 
 ### Task 8: Documentation
 
