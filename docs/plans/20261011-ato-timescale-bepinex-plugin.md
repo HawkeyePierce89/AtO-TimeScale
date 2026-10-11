@@ -214,8 +214,8 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 - Create: `.github/workflows/ci.yml`
 - Create: `.github/workflows/release.yml`
 
-- [ ] Copy all three files from AtO-ShufflePeek and replace every `AtO-ShufflePeek` with `AtO-TimeScale` (csproj path, test project path, artifact name, DLL path, zip name). Nothing else changes.
-- [ ] Verify:
+- [x] Copy all three files from AtO-ShufflePeek and replace every `AtO-ShufflePeek` with `AtO-TimeScale` (csproj path, test project path, artifact name, DLL path, zip name). Nothing else changes.
+- [x] Verify:
   - `git grep -n -i shufflepeek -- .github scripts` returns nothing;
   - `pwsh scripts/check-version.ps1 -Tag v1.0.0` exits 0 and prints `1.0.0`;
   - `-Tag v9.9.9` and `-Tag 1.0.0` exit non-zero;
