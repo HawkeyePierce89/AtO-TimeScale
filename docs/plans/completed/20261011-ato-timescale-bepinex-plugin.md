@@ -241,7 +241,7 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 - Modify: `README.md`
 - Create: `CLAUDE.md`
 
-- [ ] Rewrite the README in the ShufflePeek style:
+- [x] Rewrite the README in the ShufflePeek style:
   - title and CI badge (`HawkeyePierce89/AtO-TimeScale`), and what the plugin does;
   - a hotkeys table (F6/F7/F9 and why F5/F8/F1/F12 are avoided);
   - a config table for every entry in `BepInEx/config/hawkeyepierce89.ato.timescale.cfg`;
@@ -251,15 +251,15 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
   - Building (only the .NET SDK, compile-only NuGet references, no game assembly);
   - Versioning and Releases (`<Version>` in the csproj, pushing a `v<version>` tag);
   - Installation into `BepInEx/plugins`.
-- [ ] Multiplayer section:
+- [x] Multiplayer section:
   - the game syncs through ready barriers (`NetworkManager.SetStatusReady` and friends) and each client animates locally;
   - mixed scales only make fast players wait for the slowest one, so the plugin must be on every client for the whole session to speed up;
   - Ultrafast is almost a no-op in multiplayer because its branches are guarded by `!IsMultiplayer()`.
-- [ ] Honesty section:
+- [x] Honesty section:
   - Steam leaderboard submissions are not blocked, so runs played at a changed scale reach the leaderboards;
   - there is no anti-cheat;
   - the game's `Time.time`-based timings (tooltip delays, double-click windows) also scale.
-- [ ] `CLAUDE.md` in the ShufflePeek format:
+- [x] `CLAUDE.md` in the ShufflePeek format:
   - Layout (each `src` file, tests, `nuget.config`, the script, workflows);
   - Commands;
   - Rules:
@@ -270,8 +270,8 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
     - the only patch is Ultrafast's `SetFastMode` postfix;
     - `configGameSpeed` facts (assigned in `GameManager.Start`, `LoadPrefs` and `SetFastMode`; wait for `PrefsLoaded`);
     - version, GUID and name only in the csproj.
-- [ ] Re-read both files against the final code and config names. Run `dotnet test tests/AtO-TimeScale.Tests` once more.
-- [ ] Move this plan to `docs/plans/completed/`.
+- [x] Re-read both files against the final code and config names. Run `dotnet test tests/AtO-TimeScale.Tests` once more.
+- [x] Move this plan to `docs/plans/completed/`.
 
 ## Post-Completion (manual, owner)
 
