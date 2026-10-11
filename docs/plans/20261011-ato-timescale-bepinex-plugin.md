@@ -85,11 +85,11 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 - Create: `tests/AtO-TimeScale.Tests/ScaleLogicTests.cs`
 - Create: `src/ScaleLogic.cs`
 
-- [ ] Test csproj copied from ShufflePeek's:
+- [x] Test csproj copied from ShufflePeek's:
   - `net10.0`, `RootNamespace` `AtOTimeScale.Tests`;
   - links `../../src/ScaleLogic.cs`;
   - same xUnit package versions.
-- [ ] Write the tests first. The API is `internal static class ScaleLogic` in namespace `AtOTimeScale`; make internals visible to the tests or declare it `public static`, whichever builds warning-free.
+- [x] Write the tests first. The API is `internal static class ScaleLogic` in namespace `AtOTimeScale`; make internals visible to the tests or declare it `public static`, whichever builds warning-free.
   - Constants: `MinScale = 0.25`, `MaxScale = 20`, `DefaultSteps = "1, 1.5, 2, 3, 4, 5, 8"`.
   - `double[] ParseSteps(string text, out bool usedDefault)`:
     - split on `,`, trim, skip empty entries;
@@ -102,7 +102,7 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
   - `double Previous(double[] steps, double current)`: the last step less than `current - 1e-4`, otherwise `current`. The tolerance absorbs float round-trips through `Time.timeScale`, for example `1.1f`.
   - `bool IsNormal(double scale)`: `|scale - 1| < 1e-4`.
   - `string Format(double scale)`: `"x" + scale.ToString("0.0", CultureInfo.InvariantCulture)`.
-- [ ] Test cases:
+- [x] Test cases:
   - Parsing:
     - the default string;
     - whitespace and empty entries (`" 2 ,, 1 , "`);
@@ -120,8 +120,8 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
     - with `(double)1.1f` against a step of 1.1.
   - `Clamp`: low, high, NaN and infinity.
   - `Format`: `x1.5`, `x2.0`, `x0.5`, `x0.3` for 0.25, and `x2.5` under `de-DE` (set `CultureInfo.CurrentCulture` in the test and restore it in `finally`).
-- [ ] Implement `src/ScaleLogic.cs` with only `System`, `System.Globalization` and `System.Linq` if needed; no `Mathf`.
-- [ ] Run `dotnet test tests/AtO-TimeScale.Tests`; all tests pass. `dotnet build -c Release -warnaserror` still passes and the output is still DLL and pdb only.
+- [x] Implement `src/ScaleLogic.cs` with only `System`, `System.Globalization` and `System.Linq` if needed; no `Mathf`.
+- [x] Run `dotnet test tests/AtO-TimeScale.Tests`; all tests pass. `dotnet build -c Release -warnaserror` still passes and the output is still DLL and pdb only.
 
 ### Task 3: Config, time scale control and hotkeys
 
