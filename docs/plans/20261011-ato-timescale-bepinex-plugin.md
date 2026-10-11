@@ -129,7 +129,7 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 - Modify: `src/Plugin.cs`
 - Create: `src/TimeScaleBehaviour.cs`
 
-- [ ] Config bindings in `Plugin.Awake` (static fields, ShufflePeek style):
+- [x] Config bindings in `Plugin.Awake` (static fields, ShufflePeek style):
   - `General`:
     - `Enabled` (true);
     - `Steps` (`ScaleLogic.DefaultSteps`);
@@ -142,23 +142,23 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
     - `FontSize` (18, range 10–48);
     - `HideAtNormalSpeed` (true).
   - `Hotkeys`: `Slower` (F6), `Faster` (F7), `Reset` (F9).
-- [ ] State on `Plugin`:
+- [x] State on `Plugin`:
   - `Steps` (`double[]`), reparsed on `Steps.SettingChanged`, with a warning when it falls back to the defaults;
   - `CurrentScale` (double), the value the plugin last applied.
-- [ ] `ApplyScale(double scale, string reason)`:
+- [x] `ApplyScale(double scale, string reason)`:
   - clamp through `ScaleLogic.Clamp` and store `CurrentScale`;
   - if `Enabled`, set `Time.timeScale = (float)CurrentScale`;
   - write `LastScale`;
   - log `Time scale x2.0 (<reason>)` with the new value.
-- [ ] Startup: the initial scale is `LastScale` when `RememberLastScale` is on, otherwise `StartupScale`. Apply it once in `Awake` (only touch `timeScale` when enabled).
-- [ ] `Enabled.SettingChanged` (in try/catch):
+- [x] Startup: the initial scale is `LastScale` when `RememberLastScale` is on, otherwise `StartupScale`. Apply it once in `Awake` (only touch `timeScale` when enabled).
+- [x] `Enabled.SettingChanged` (in try/catch):
   - false: set `Time.timeScale = 1f` and log;
   - true: reapply `CurrentScale` and log.
-- [ ] Create the hidden `DontDestroyOnLoad` host object `TimeScale` with `TimeScaleBehaviour`. Its `Update` (try/catch) does the following:
+- [x] Create the hidden `DontDestroyOnLoad` host object `TimeScale` with `TimeScaleBehaviour`. Its `Update` (try/catch) does the following:
   - When enabled, it handles the `Faster`/`Slower`/`Reset` `IsDown()` presses using `ScaleLogic.Next`/`Previous` and 1.0. When a press does not change the value (end of the list), it logs nothing.
   - External-reset guard: when enabled and `Mathf.Abs(Time.timeScale - (float)CurrentScale) > 1e-4f`, it reapplies the scale and logs a warning only the first time.
   - It uses no `Time.deltaTime`/`Time.time`.
-- [ ] Verify:
+- [x] Verify:
   - `dotnet build -c Release -warnaserror` passes;
   - `git grep -n -e "Time.deltaTime" -e "Time.time\b" src/` returns nothing;
   - `dotnet test tests/AtO-TimeScale.Tests` passes.
