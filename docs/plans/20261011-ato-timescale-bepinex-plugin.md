@@ -168,14 +168,14 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 **Files:**
 - Modify: `src/TimeScaleBehaviour.cs`
 
-- [ ] `OnGUI` (try/catch):
+- [x] `OnGUI` (try/catch):
   - Return early when the overlay has failed, when `Enabled` is off, or when `HideAtNormalSpeed` is on and `ScaleLogic.IsNormal(CurrentScale)`.
   - Otherwise build a `GUIStyle` from `GUI.skin.label` with the `FontSize` from config, `wordWrap = false`.
   - The text is `ScaleLogic.Format(CurrentScale)`. Measure it with `CalcSize`, draw the `Color(0,0,0,0.7)` box with `Texture2D.whiteTexture` and 8px padding at `PositionX`/`PositionY` (read every frame), then the label.
-- [ ] `Fail(where, e)` as in ShufflePeek:
+- [x] `Fail(where, e)` as in ShufflePeek:
   - the first failure logs an error and sets an `overlayFailed` flag that hides the overlay for the session;
   - the Update path keeps its own log-once flag, so a hotkey error cannot spam the log.
-- [ ] Verify: `dotnet build -c Release -warnaserror` passes and `dotnet test tests/AtO-TimeScale.Tests` passes.
+- [x] Verify: `dotnet build -c Release -warnaserror` passes and `dotnet test tests/AtO-TimeScale.Tests` passes.
 
 ### Task 5: Optional Ultrafast mode
 
