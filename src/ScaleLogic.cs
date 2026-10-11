@@ -74,6 +74,19 @@ namespace AtOTimeScale
             return current;
         }
 
+        // A scale restored from a float config entry carries float rounding error (2.0001f is 2.0000998...),
+        // which can bring it within Tolerance of a neighbouring step. Snap it back to the step it came from,
+        // only on an exact float round-trip, so a distinct nearby float stays as it is.
+        public static double Snap(double[] steps, double scale)
+        {
+            foreach (var step in steps)
+            {
+                if (scale == (double)(float)step)
+                    return step;
+            }
+            return scale;
+        }
+
         public static bool IsNormal(double scale) => Math.Abs(scale - 1) < Tolerance;
 
         public static string Format(double scale) => "x" + scale.ToString("0.0", CultureInfo.InvariantCulture);

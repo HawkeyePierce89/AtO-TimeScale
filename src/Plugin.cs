@@ -70,7 +70,7 @@ namespace AtOTimeScale
                 EnableUltrafast.SettingChanged += OnEnableUltrafastChanged;
 
                 double initial = RememberLastScale.Value ? LastScale.Value : StartupScale.Value;
-                ApplyScale(initial, "startup");
+                ApplyScale(ScaleLogic.Snap(Steps, initial), "startup");
 
                 var host = new GameObject("TimeScale");
                 DontDestroyOnLoad(host);
@@ -109,6 +109,8 @@ namespace AtOTimeScale
             try
             {
                 ReparseSteps();
+                // The current scale may be a float round-trip of a step that only now appears in the list.
+                CurrentScale = ScaleLogic.Snap(Steps, CurrentScale);
             }
             catch (System.Exception e)
             {

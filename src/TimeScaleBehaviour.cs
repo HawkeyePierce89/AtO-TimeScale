@@ -93,7 +93,8 @@ namespace AtOTimeScale
 
         private static void Step(double target, string reason)
         {
-            if (Math.Abs(target - Plugin.CurrentScale) < ScaleLogic.Tolerance)
+            // Next/Previous return CurrentScale itself at the end of the list; Reset always lands on exactly 1.0.
+            if (target == Plugin.CurrentScale)
                 return;
             Plugin.ApplyScale(target, reason);
         }

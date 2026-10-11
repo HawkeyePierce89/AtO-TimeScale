@@ -41,9 +41,9 @@ namespace AtOTimeScale
             if (!patched)
             {
                 var postfix = new HarmonyMethod(AccessTools.Method(typeof(Ultrafast), nameof(SetFastModePostfix)));
-                int applied = TryPatch(harmony, setFastModeMethod, postfix) ? 1 : 0;
-                patched = true;
-                Plugin.Log.LogInfo($"{applied} patches applied");
+                // A failed patch stays unpatched, so the next enable retries it.
+                patched = TryPatch(harmony, setFastModeMethod, postfix);
+                Plugin.Log.LogInfo($"{(patched ? 1 : 0)} patches applied");
             }
             pending = true;
         }

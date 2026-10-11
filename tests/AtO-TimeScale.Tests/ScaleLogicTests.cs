@@ -178,6 +178,27 @@ namespace AtOTimeScale.Tests
             Assert.Equal(1, ScaleLogic.Previous(steps, current));
         }
 
+        [Fact]
+        public void Snap_RestoresStepFromFloatRoundTrip()
+        {
+            var steps = ScaleLogic.ParseSteps("1, 2, 2.0001, 3", out _);
+            double restored = (double)2.0001f;
+            Assert.True(restored - 2 < ScaleLogic.Tolerance);
+            double snapped = ScaleLogic.Snap(steps, restored);
+            Assert.Equal(2.0001, snapped);
+            Assert.Equal(2, ScaleLogic.Previous(steps, snapped));
+            Assert.Equal(20, ScaleLogic.Snap(new double[] { 20 }, (double)20f));
+        }
+
+        [Fact]
+        public void Snap_LeavesValueBetweenStepsUnchanged()
+        {
+            Assert.Equal(2.5, ScaleLogic.Snap(Defaults, 2.5));
+            Assert.Equal(1.00005, ScaleLogic.Snap(Defaults, 1.00005));
+            double nearTen = (double)10.000009f;
+            Assert.Equal(nearTen, ScaleLogic.Snap(new double[] { 1, 10 }, nearTen));
+        }
+
         [Theory]
         [InlineData(0.1, 0.25)]
         [InlineData(-3, 0.25)]
