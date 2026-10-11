@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>AtO-TimeScale</AssemblyName>
+    <RootNamespace>AtOTimeScale</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Version>1.0.0</Version>
+    <PluginGuid>hawkeyepierce89.ato.timescale</PluginGuid>
+    <PluginName>TimeScale</PluginName>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="tests/**" />
+    <None Remove="tests/**" />
+    <EmbeddedResource Remove="tests/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UnityEngine.Modules" Version="[2022.3.62]" IncludeAssets="compile" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Core" Version="[5.4.21]" IncludeAssets="compile" PrivateAssets="all" />
+  </ItemGroup>
+
+  <Target Name="GeneratePluginInfo" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <_PluginInfoLine Include="namespace AtOTimeScale" />
+      <_PluginInfoLine Include="{" />
+      <_PluginInfoLine Include="    internal static class PluginInfo" />
+      <_PluginInfoLine Include="    {" />
+      <_PluginInfoLine Include="        public const string Guid = &quot;$(PluginGuid)&quot;%3B" />
+      <_PluginInfoLine Include="        public const string Name = &quot;$(PluginName)&quot;%3B" />
+      <_PluginInfoLine Include="        public const string Version = &quot;$(Version)&quot;%3B" />
+      <_PluginInfoLine Include="    }" />
+      <_PluginInfoLine Include="}" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(IntermediateOutputPath)PluginInfo.g.cs" Lines="@(_PluginInfoLine)"
+                      Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)PluginInfo.g.cs" />
+      <FileWrites Include="$(IntermediateOutputPath)PluginInfo.g.cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>

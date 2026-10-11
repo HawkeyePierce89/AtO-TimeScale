@@ -64,16 +64,16 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 - Create: `.gitignore`
 - Create: `src/Plugin.cs`
 
-- [ ] Copy `AtO-ShufflePeek.csproj` as `AtO-TimeScale.csproj` and change:
+- [x] Copy `AtO-ShufflePeek.csproj` as `AtO-TimeScale.csproj` and change:
   - `AssemblyName` to `AtO-TimeScale` and `RootNamespace` to `AtOTimeScale`;
   - `Version` stays `1.0.0`, `PluginGuid` becomes `hawkeyepierce89.ato.timescale`, `PluginName` becomes `TimeScale`;
   - the generated `PluginInfo` namespace becomes `AtOTimeScale` (keep the `%3B` semicolons).
   - Everything else stays the same: the `tests/**` removals, the compile-only package references, `GenerateDependencyFile=false` and `IncludeSourceRevisionInInformationalVersion=false`.
-- [ ] Copy `nuget.config` and `.gitignore` (`bin/`, `obj/`, `.vs/`, `*.user`) verbatim.
-- [ ] Minimal `src/Plugin.cs`:
+- [x] Copy `nuget.config` and `.gitignore` (`bin/`, `obj/`, `.vs/`, `*.user`) verbatim.
+- [x] Minimal `src/Plugin.cs`:
   - `[BepInPlugin(PluginInfo.Guid, PluginInfo.Name, PluginInfo.Version)]`, static `Log`;
   - `Awake` with try/catch that logs `"{Name} {Version} loaded"`.
-- [ ] Verify:
+- [x] Verify:
   - `dotnet build -c Release -warnaserror` passes with zero warnings;
   - `bin/Release/netstandard2.1/` holds only `AtO-TimeScale.dll` and `AtO-TimeScale.pdb`;
   - `obj/Release/netstandard2.1/PluginInfo.g.cs` contains the new GUID, name and `1.0.0`.
