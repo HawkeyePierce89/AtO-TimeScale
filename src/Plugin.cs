@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using HarmonyLib;
 using UnityEngine;
 
 namespace AtOTimeScale
@@ -28,6 +29,7 @@ namespace AtOTimeScale
         internal static double CurrentScale = 1.0;
 
         internal static TimeScaleBehaviour Behaviour;
+        private static Harmony harmony;
 
         private void Awake()
         {
@@ -66,6 +68,7 @@ namespace AtOTimeScale
                 ReparseSteps();
                 StepsText.SettingChanged += OnStepsChanged;
                 Enabled.SettingChanged += OnEnabledChanged;
+                EnableUltrafast.SettingChanged += OnEnableUltrafastChanged;
 
                 double initial = RememberLastScale.Value ? LastScale.Value : StartupScale.Value;
                 ApplyScale(initial, "startup");
@@ -74,6 +77,9 @@ namespace AtOTimeScale
                 DontDestroyOnLoad(host);
                 host.hideFlags = HideFlags.HideAndDontSave;
                 Behaviour = host.AddComponent<TimeScaleBehaviour>();
+
+                harmony = new Harmony(PluginInfo.Guid);
+                Ultrafast.Init(harmony);
 
                 Log.LogInfo($"{PluginInfo.Name} {PluginInfo.Version} loaded");
             }
@@ -129,6 +135,21 @@ namespace AtOTimeScale
             catch (System.Exception e)
             {
                 Log.LogError($"Enabled change handler failed: {e}");
+            }
+        }
+
+        private static void OnEnableUltrafastChanged(object sender, System.EventArgs args)
+        {
+            try
+            {
+                if (EnableUltrafast.Value)
+                    Ultrafast.Enable(harmony);
+                else
+                    Ultrafast.Disable();
+            }
+            catch (System.Exception e)
+            {
+                Log.LogError($"EnableUltrafast change handler failed: {e}");
             }
         }
     }

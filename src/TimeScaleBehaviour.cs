@@ -17,6 +17,9 @@ namespace AtOTimeScale
         {
             try
             {
+                // Ultrafast is governed only by EnableUltrafast, independent of Enabled.
+                Ultrafast.Tick();
+
                 if (!Plugin.Enabled.Value)
                     return;
 

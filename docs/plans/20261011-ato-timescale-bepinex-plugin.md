@@ -184,24 +184,24 @@ The repository copies the skeleton of `C:\git\AtO-ShufflePeek`: build, `nuget.co
 - Modify: `src/Plugin.cs`
 - Modify: `src/TimeScaleBehaviour.cs`
 
-- [ ] `Ultrafast.Resolve()` resolves the following through `AccessTools`, each logged as a warning and the feature disabled if missing:
+- [x] `Ultrafast.Resolve()` resolves the following through `AccessTools`, each logged as a warning and the feature disabled if missing:
   - `GameManager` via `TypeByName`;
   - its static `Instance` property;
   - the `PrefsLoaded` and `configGameSpeed` fields;
   - the enum values `Ultrafast`, `Fast` and `Slow`, via `Enum.Parse(configGameSpeedField.FieldType, name)`, never by number;
   - `SettingsManager` and its `SetFastMode(bool)` method.
-- [ ] A `TryPatch` helper (as in ShufflePeek) applies the `SetFastModePostfix`. The patch is applied lazily, the first time Ultrafast is enabled (at startup or at runtime), using the `Harmony` instance created in `Plugin.Awake` with `PluginInfo.Guid`. With the option off at startup, the plugin calls nothing and logs `0 patches applied`.
-- [ ] Deferred assignment:
+- [x] A `TryPatch` helper (as in ShufflePeek) applies the `SetFastModePostfix`. The patch is applied lazily, the first time Ultrafast is enabled (at startup or at runtime), using the `Harmony` instance created in `Plugin.Awake` with `PluginInfo.Guid`. With the option off at startup, the plugin calls nothing and logs `0 patches applied`.
+- [x] Deferred assignment:
   - `Ultrafast.Tick()` is called from `TimeScaleBehaviour.Update`.
   - While a `pending` flag is set, it waits until `GameManager.Instance != null` and `PrefsLoaded` is true, so that `GameManager.Start` and `LoadPrefs` cannot overwrite the value.
   - It then sets `configGameSpeed` to `Ultrafast`, logs it, and clears `pending`.
   - No per-scene reapply is needed (verified: single `DontDestroyOnLoad` instance, `LoadPrefs` called only from `GameManager.Start`).
-- [ ] `SetFastModePostfix` (try/catch): if `EnableUltrafast` is on, set `configGameSpeed` back to `Ultrafast` and log at debug level.
-- [ ] `EnableUltrafast.SettingChanged` (try/catch):
+- [x] `SetFastModePostfix` (try/catch): if `EnableUltrafast` is on, set `configGameSpeed` back to `Ultrafast` and log at debug level.
+- [x] `EnableUltrafast.SettingChanged` (try/catch):
   - on: resolve and patch if not done yet, then set `pending`;
   - off: clear `pending`; if the instance exists and prefs are loaded, set `configGameSpeed` to `Fast` when `PlayerPrefs.HasKey("fastMode") && PlayerPrefs.GetInt("fastMode") == 1`, otherwise `Slow`, and log. The postfix stays installed but is a no-op while the option is off.
-- [ ] Ultrafast is governed only by `EnableUltrafast`, independent of `Enabled`.
-- [ ] Verify:
+- [x] Ultrafast is governed only by `EnableUltrafast`, independent of `Enabled`.
+- [x] Verify:
   - `dotnet build -c Release -warnaserror` passes;
   - `git grep -n "typeof(GameManager\|typeof(SettingsManager" src/` returns nothing;
   - a metadata check (pwsh with `System.Reflection.Metadata`) shows no `Assembly-CSharp` reference, and `BepInPlugin` arguments of `hawkeyepierce89.ato.timescale` / `TimeScale` / `1.0.0`;
