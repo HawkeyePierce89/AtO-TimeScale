@@ -63,6 +63,15 @@ namespace AtOTimeScale.Tests
         }
 
         [Fact]
+        public void KeptStepsOneToleranceApart_AreBothReachable()
+        {
+            var steps = ScaleLogic.ParseSteps("1, 2, 2.0001, 3", out _);
+            Assert.Equal(new[] { 1, 2, 2.0001, 3 }, steps);
+            Assert.Equal(2.0001, ScaleLogic.Next(steps, 2));
+            Assert.Equal(2, ScaleLogic.Previous(steps, 2.0001));
+        }
+
+        [Fact]
         public void ParseSteps_ClampsOutOfRangeAndDeduplicates()
         {
             var steps = ScaleLogic.ParseSteps("0, 0.1, 50", out var usedDefault);

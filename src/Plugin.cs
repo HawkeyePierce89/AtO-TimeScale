@@ -28,7 +28,6 @@ namespace AtOTimeScale
         internal static double[] Steps = ScaleLogic.ParseSteps(ScaleLogic.DefaultSteps, out _);
         internal static double CurrentScale = 1.0;
 
-        internal static TimeScaleBehaviour Behaviour;
         private static Harmony harmony;
 
         private void Awake()
@@ -76,7 +75,7 @@ namespace AtOTimeScale
                 var host = new GameObject("TimeScale");
                 DontDestroyOnLoad(host);
                 host.hideFlags = HideFlags.HideAndDontSave;
-                Behaviour = host.AddComponent<TimeScaleBehaviour>();
+                host.AddComponent<TimeScaleBehaviour>();
 
                 harmony = new Harmony(PluginInfo.Guid);
                 Ultrafast.Init(harmony);

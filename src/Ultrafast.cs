@@ -21,7 +21,7 @@ namespace AtOTimeScale
         private static object ultrafastValue;
         private static object fastValue;
         private static object slowValue;
-        private static Type settingsManagerType;
+        private static MethodInfo setFastModeMethod;
 
         // Called from Plugin.Awake: patches only when the option is on at startup.
         public static void Init(Harmony harmony)
@@ -41,7 +41,7 @@ namespace AtOTimeScale
             if (!patched)
             {
                 var postfix = new HarmonyMethod(AccessTools.Method(typeof(Ultrafast), nameof(SetFastModePostfix)));
-                int applied = TryPatch(harmony, settingsManagerType, "SetFastMode", postfix) ? 1 : 0;
+                int applied = TryPatch(harmony, setFastModeMethod, postfix) ? 1 : 0;
                 patched = true;
                 Plugin.Log.LogInfo($"{applied} patches applied");
             }
@@ -69,13 +69,21 @@ namespace AtOTimeScale
             if (!pending || unavailable)
                 return;
 
-            object manager = GetReadyManager();
-            if (manager == null)
-                return;
+            try
+            {
+                object manager = GetReadyManager();
+                if (manager == null)
+                    return;
 
-            configGameSpeedField.SetValue(manager, ultrafastValue);
-            pending = false;
-            Plugin.Log.LogInfo("Game speed set to Ultrafast");
+                configGameSpeedField.SetValue(manager, ultrafastValue);
+                pending = false;
+                Plugin.Log.LogInfo("Game speed set to Ultrafast");
+            }
+            catch (Exception e)
+            {
+                pending = false;
+                Plugin.Log.LogError($"Ultrafast Tick failed, not retrying: {e}");
+            }
         }
 
         private static bool Resolve()
@@ -111,10 +119,11 @@ namespace AtOTimeScale
             if (ultrafastValue == null || fastValue == null || slowValue == null)
                 return false;
 
-            settingsManagerType = AccessTools.TypeByName("SettingsManager");
+            Type settingsManagerType = AccessTools.TypeByName("SettingsManager");
             if (settingsManagerType == null)
                 return Missing("Type SettingsManager");
-            if (AccessTools.Method(settingsManagerType, "SetFastMode", new[] { typeof(bool) }) == null)
+            setFastModeMethod = AccessTools.Method(settingsManagerType, "SetFastMode", new[] { typeof(bool) });
+            if (setFastModeMethod == null)
                 return Missing("SettingsManager.SetFastMode(bool)");
 
             return true;
@@ -151,24 +160,18 @@ namespace AtOTimeScale
         // Unity equality also treats a destroyed GameManager as null.
         private static bool IsAlive(object value) => value is UnityEngine.Object o ? o != null : value != null;
 
-        private static bool TryPatch(Harmony harmony, Type type, string methodName, HarmonyMethod postfix)
+        private static bool TryPatch(Harmony harmony, MethodInfo original, HarmonyMethod postfix)
         {
-            MethodInfo original = AccessTools.Method(type, methodName, new[] { typeof(bool) });
-            if (original == null)
-            {
-                Plugin.Log.LogWarning($"{type.Name}.{methodName} not found, skipping");
-                return false;
-            }
-
+            string name = $"{original.DeclaringType?.Name}.{original.Name}";
             try
             {
                 harmony.Patch(original, postfix: postfix);
-                Plugin.Log.LogInfo($"Patch applied: {type.Name}.{methodName}");
+                Plugin.Log.LogInfo($"Patch applied: {name}");
                 return true;
             }
             catch (Exception e)
             {
-                Plugin.Log.LogError($"Patching {type.Name}.{methodName} failed: {e}");
+                Plugin.Log.LogError($"Patching {name} failed: {e}");
                 return false;
             }
         }

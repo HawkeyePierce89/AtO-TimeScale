@@ -7,9 +7,9 @@ A BepInEx 5 plugin for Across the Obelisk (v1.7.7.1, Unity 2022.3, Mono). It spe
 ## What it does
 
 - The Faster and Slower hotkeys step through a configurable list of multipliers (`1, 1.5, 2, 3, 4, 5, 8` by default). The Reset hotkey returns to x1.0. Every change is written to the BepInEx log.
-- The overlay shows the current multiplier, for example `x2.0`. By default it is hidden at normal speed.
+- The overlay shows the current multiplier rounded to one decimal place, for example `x2.0` (a step of `0.25` shows as `x0.3`, but 0.25 is what gets applied). By default it is hidden at normal speed.
 - Nothing in the game is patched for this: the plugin only sets `Time.timeScale`. If something else in the game resets `Time.timeScale`, the plugin puts its value back on the next frame and logs a warning the first time.
-- Turning `Enabled` off returns the game to normal speed immediately; turning it back on restores the chosen multiplier.
+- Turning `Enabled` off returns the game to normal speed immediately; turning it back on restores the chosen multiplier. While it is off, the hotkeys are ignored, the overlay is hidden, and the plugin no longer puts `Time.timeScale` back if the game changes it.
 - An optional Ultrafast mode (off by default) forces the game's own combat speed setting to Ultrafast. See [Ultrafast](#ultrafast).
 
 ## Hotkeys
@@ -63,7 +63,7 @@ At game start the plugin applies `LastScale` when `RememberLastScale` is on, and
 
 The game has two combat speed settings, normal and fast (the fast mode toggle in the settings menu), and a third value, Ultrafast, that the menu never selects. With `EnableUltrafast` on, the plugin sets the game's speed setting to Ultrafast once the game has loaded its preferences, and keeps it there when the fast mode toggle in the settings menu is changed. This is the only Harmony patch in the plugin: a postfix on `SettingsManager.SetFastMode`. It is applied the first time Ultrafast is enabled, so with the option off the log shows `0 patches applied`.
 
-Turning `EnableUltrafast` off restores the speed setting from the saved fast mode preference. Ultrafast is independent of `Enabled` and stacks with the time scale.
+Turning `EnableUltrafast` off restores the speed setting from the saved fast mode preference. Ultrafast is independent of `Enabled` and stacks with the time scale. If the game's speed setting can't be found (for example after a game update), the plugin logs a `... not found, Ultrafast disabled` warning and leaves the setting alone; the time scale hotkeys keep working.
 
 ## Multiplayer
 
@@ -111,7 +111,7 @@ Download `AtO-TimeScale.dll`, or the `AtO-TimeScale-v<version>.zip` that also ho
 
 1. Install BepInEx 5 for Across the Obelisk.
 2. Copy `AtO-TimeScale.dll` into `<game folder>/BepInEx/plugins`. The build does not copy it for you.
-3. Start the game. The BepInEx log should show `TimeScale 1.0.0 loaded` and `0 patches applied` (1 with `EnableUltrafast` on).
+3. Start the game. The BepInEx log should show `TimeScale <version> loaded` and `0 patches applied` (1 with `EnableUltrafast` on).
 
 ## License
 

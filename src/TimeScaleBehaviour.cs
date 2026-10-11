@@ -11,15 +11,15 @@ namespace AtOTimeScale
         private bool updateFailed;
         private bool externalResetWarned;
         private bool overlayFailed;
-        private bool overlayErrorLogged;
 
         private void Update()
         {
+            // Ultrafast is governed only by EnableUltrafast, independent of Enabled.
+            // It has its own try/catch so a failure there cannot disable the hotkeys.
+            Ultrafast.Tick();
+
             try
             {
-                // Ultrafast is governed only by EnableUltrafast, independent of Enabled.
-                Ultrafast.Tick();
-
                 if (!Plugin.Enabled.Value)
                     return;
 
@@ -87,17 +87,13 @@ namespace AtOTimeScale
 
         private void Fail(string where, Exception e)
         {
-            if (!overlayErrorLogged)
-            {
-                overlayErrorLogged = true;
-                Plugin.Log.LogError($"Overlay {where} failed, hiding overlay: {e}");
-            }
             overlayFailed = true;
+            Plugin.Log.LogError($"Overlay {where} failed, hiding overlay: {e}");
         }
 
         private static void Step(double target, string reason)
         {
-            if (Math.Abs(target - Plugin.CurrentScale) < 1e-4)
+            if (Math.Abs(target - Plugin.CurrentScale) < ScaleLogic.Tolerance)
                 return;
             Plugin.ApplyScale(target, reason);
         }

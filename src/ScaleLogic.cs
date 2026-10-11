@@ -10,7 +10,7 @@ namespace AtOTimeScale
         public const double MaxScale = 20;
         public const string DefaultSteps = "1, 1.5, 2, 3, 4, 5, 8";
 
-        private const double Tolerance = 1e-4;
+        public const double Tolerance = 1e-4;
 
         public static double[] ParseSteps(string text, out bool usedDefault)
         {
@@ -58,7 +58,7 @@ namespace AtOTimeScale
         {
             foreach (var step in steps)
             {
-                if (step > current + Tolerance)
+                if (step - current >= Tolerance)
                     return step;
             }
             return current;
@@ -68,7 +68,7 @@ namespace AtOTimeScale
         {
             for (int i = steps.Length - 1; i >= 0; i--)
             {
-                if (steps[i] < current - Tolerance)
+                if (current - steps[i] >= Tolerance)
                     return steps[i];
             }
             return current;

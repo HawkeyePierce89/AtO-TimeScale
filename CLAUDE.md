@@ -10,8 +10,8 @@ BepInEx 5 plugin for Across the Obelisk that changes `Time.timeScale` with hotke
 - `src/ScaleLogic.cs`: pure logic (step parsing, next/previous, clamping, formatting).
 - `tests/AtO-TimeScale.Tests`: xUnit tests; the project links `../../src/ScaleLogic.cs` directly.
 - `nuget.config`: nuget.org plus the BepInEx feed for the compile-only Unity/BepInEx packages.
-- `scripts/check-version.ps1`: checks that a `v<version>` tag matches the csproj `Version`; used by the release workflow.
-- `.github/workflows/`: `ci.yml` (restore, build, test, DLL artifact) and `release.yml` (tag-triggered GitHub Release).
+- `scripts/check-version.ps1`: checks that a `v<version>` tag matches the csproj `Version`; used by the release workflow, and CI self-tests it (the matching tag must pass, a mismatched tag must fail).
+- `.github/workflows/`: `ci.yml` (version-script self-test, restore, build, test, DLL artifact) and `release.yml` (tag-triggered GitHub Release).
 
 ## Commands
 
